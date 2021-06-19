@@ -35,6 +35,12 @@ googleAnalytics = ""
   enableHeaderVisitor = true
   debug = true
 
+[params.utteranc]
+  enable = true
+  repo = "Afrankie/blog-comments" ##换成自己得
+  issueTerm = "title"
+  theme = "github-light"
+
 [menu]
   [[menu.main]]
   name = "Home"
