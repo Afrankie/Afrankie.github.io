@@ -1,11 +1,11 @@
-baseURL = "http://example.org/"
+baseURL = "https://afrankie.github.io/"
 languageCode = "en"
 DefaultContentLanguage = "en"
 enableInlineShortcodes = true
 enableEmoji = true
 # pagination = 10
 
-title = "Hugo"
+title = "Afrankie"
 author = "Afrankie"
 copyright = ""
 

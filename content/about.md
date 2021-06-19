@@ -1,21 +1,8 @@
 ---
-title: About
-date: 2021-06-19T15:39:58+05:30
-lastmod: 
-author: Afrankie
-
-description:
-categories: []
-tags: []
-
-draft: false
-enableDisqus : true
-enableMathJax: false
-disableToC: false
-disableAutoCollapse: true
+title: "About"
+date: 2021-06-19T17:34:34+08:00
 ---
-
 ## 关于我
 
-将学习的知识分享出来~
+等我把算法竞赛进阶指南例题刷穿且习题完成一半 or 刷完MIT 6s081&&Stanford CS144再来做个介绍把~
 
