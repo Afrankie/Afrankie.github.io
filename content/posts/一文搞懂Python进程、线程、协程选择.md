@@ -27,8 +27,9 @@ else:
 ## 几个有趣的问题
 
 ### linux中线程和进程的区别？
-对于linux来说，实际上没有区别，<cite>*一组线程(>=1)就是一个进程*[^1]</cite>[^1]: [Will a CPU process have at least one thread?](https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread)，
-而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
+对于linux来说，实际上没有区别，<cite>*一组线程(>=1)就是一个进程*[^1]</cite>
+[^1]: [Will a CPU process have at least one thread?](https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread)
+，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
 > [官方GIL解释](https://docs.python.org/3.7/glossary.html#term-global-interpreter-lock):assure that only one thread executes Python bytecode at a time.
 ___
 
@@ -111,7 +112,7 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 1.6991519927978516
 ```
 前面提到，由于GIL的原因，某一时刻只能有一个线程在运行，其他线程会阻塞在GIL锁，抢锁的次数会非常多。可以通过PyCharm的profile查看耗时较多的函数，这里只profile一下使用线程池的函数。
-{{< figure src="../../data/thread_pool_running_cpu_bound_task_profile.pn" title="thread_pool_running_cpu_bound_task_profile" >}}
+![thread_pool_running_cpu_bound_task_profile](/post/images/thread_pool_running_cpu_bound_task_profile.png)
 ### i/o、cpu密集型任务
 1K任务总量
 ```bash
