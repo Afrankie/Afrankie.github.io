@@ -10,7 +10,7 @@ author = "Afrankie"
 copyright = ""
 
 theme = "simpleness"
-googleAnalytics = ""
+googleAnalytics = "UA-221365203-1"
 
 [params]
   lazyImage = true
@@ -19,7 +19,7 @@ googleAnalytics = ""
   favicon = "favicon.ico"
   startyear = "2021"
   showmonth = true
-  slogan = "always make it happen"
+  slogan = "confusionless is imposible, but you should keep pursuing"
   description = "A simple and concise hugo theme."
   disqus = ""
 
