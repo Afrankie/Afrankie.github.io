@@ -110,7 +110,7 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 1.6991519927978516
 ```
 前面提到，由于GIL的原因，某一时刻只能有一个线程在运行，其他线程会阻塞在GIL锁，抢锁的次数会非常多。可以通过PyCharm的profile查看耗时较多的函数，这里只profile一下使用线程池的函数。
-![thread_pool_running_cpu_bound_task_profile](/post/images/thread_pool_running_cpu_bound_task_profile.png)
+![thread_pool_running_cpu_bound_task_profile](/posts/images/thread_pool_running_cpu_bound_task_profile.png)
 ### i/o、cpu密集型任务
 1K任务总量
 ```bash
