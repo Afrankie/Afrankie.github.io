@@ -27,9 +27,7 @@ else:
 ## 几个有趣的问题
 
 ### linux中线程和进程的区别？
-对于linux来说，实际上没有区别，<cite>*一组线程(>=1)就是一个进程*[^1]</cite>
-[^1]: [Will a CPU process have at least one thread?](https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread)
-，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
+对于linux来说，实际上没有区别，<cite>*一组线程(>=1)就是一个进程*[^1]</cite>，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
 > [官方GIL解释](https://docs.python.org/3.7/glossary.html#term-global-interpreter-lock):assure that only one thread executes Python bytecode at a time.
 ___
 
@@ -254,6 +252,8 @@ if __name__ == '__main__':
     process_pool(True)
     process_pool(False)
 ```
+
+[^1]: [Will a CPU process have at least one thread?](https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread)
 
 ## 参考
 - [Multithreading VS Multiprocessing in Python](https://medium.com/contentsquare-engineering-blog/multithreading-vs-multiprocessing-in-python-ece023ad55a)
