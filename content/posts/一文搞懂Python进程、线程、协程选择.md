@@ -1,5 +1,5 @@
 ---
-title: "一问搞懂Python进程、线程、协程选择"
+title: "一文搞懂Python进程、线程、协程选择"
 date: 2022-02-23T11:21:00+08:00
 lastmod: 2022-02-24T14:13:38+08:00
 
@@ -27,7 +27,7 @@ else:
 ## 几个有趣的问题
 
 ### linux中线程和进程的区别？
-对于linux来说，实际上没有区别，*一组线程(>=1)就是一个进程*，[参考链接](https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread)
+对于linux来说，实际上没有区别，<cite>*一组线程(>=1)就是一个进程*[^1]</cite>[^1]: [Will a CPU process have at least one thread?](https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread)，
 而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
 > [官方GIL解释](https://docs.python.org/3.7/glossary.html#term-global-interpreter-lock):assure that only one thread executes Python bytecode at a time.
 ___
@@ -56,12 +56,12 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 
 而对于CPU密集型的任务，例如需要执行n次`cpu_bound`，多线程并不适合，因为没有空闲的时间可以利用，切换进程只会增加总的运行时间。这时候需要多核cpu，同一时间能够运行多个线程。
 ###  什么时候需要协程？
-协程切换的开销很小，且花费的内存小，在I/O耗时较长的时候且任务较多的时候，协程的性能一定比线程要好。
+协程切换的开销很小，且花费的内存小，在任务I/O耗时较长的且较多的时候，协程的性能一定比线程要好，具体看后面的测试结果。
 ### 什么时候需要进程和线程结合使用？
-当任务即使I/O密集型也是CPU密集型的时候，通常来说有两种情况，一种是CPU操作依赖I/O操作的结果，另一种是I/O操作依赖CPU操作的结果。对于这两种情况，经本地测试，都适合在进程池里面使用线程池。
+当任务即使I/O密集型也是CPU密集型的时候，这种情况可以分为两大类，一种是CPU操作依赖I/O操作的结果，另一种是I/O操作依赖CPU操作的结果。对于这两种情况，经本地测试，都适合在进程池里面使用线程池。
 
 ## 实战分析
-来自于工作中碰到的简化场景，具体来说是单机每秒发出1k的rpc请求。下面尝试了了多种方式，把rpc请求改为读取文件的方式。
+来自于工作中碰到的简化场景，具体来说是单机每秒发出1k的rpc请求。这里把rpc请求替换为文件的io操作，分别使用进程池、线程池、协程池的方式处理任务。
 
 ### i/o密集型任务
 1k任务总量
@@ -111,7 +111,7 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 1.6991519927978516
 ```
 前面提到，由于GIL的原因，某一时刻只能有一个线程在运行，其他线程会阻塞在GIL锁，抢锁的次数会非常多。可以通过PyCharm的profile查看耗时较多的函数，这里只profile一下使用线程池的函数。
-![thread_pool_running_cpu_bound_task_profile.png](../../data/thread_pool_running_cpu_bound_task_profile.png)
+{{< figure src="../../data/thread_pool_running_cpu_bound_task_profile.pn" title="thread_pool_running_cpu_bound_task_profile" >}}
 ### i/o、cpu密集型任务
 1K任务总量
 ```bash
