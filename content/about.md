@@ -10,13 +10,13 @@ education:
   major in software engineering
 
 passion about:
-- competive programming
+- competitive programming
   - leetcode id: yasshole
   - codeforces id: jayjian
   - atcoder id: jayjian
 - computer science
 
 interesting things i've tried:
-- mit 6s081 (2021-3 ~ ?)
-- 算法竞赛进阶指南 (2021-1 ~ ?)
+- mit 6s081 (2021-3 ~ 2022-5)
+- 算法竞赛进阶指南 (2021-1 ~ now)
 

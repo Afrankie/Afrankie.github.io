@@ -1,7 +1,7 @@
 ---
 title: "一文搞懂Python进程、线程、协程选择"
 date: 2022-02-23T11:21:00+08:00
-lastmod: 2022-02-24T14:13:38+08:00
+lastmod: 2022-02-25T14:13:38+08:00
 
 categories: [Python]
 tags: [Python, 并发编程]
@@ -24,10 +24,10 @@ else:
 ```
 
 
-## 几个有趣的问题
+## 关于线程、进程、协程的常见问题
 
 ### linux中线程和进程的区别？
-对于linux来说，实际上没有区别，<cite>*一组线程(>=1)就是一个进程*[^1]</cite>，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
+对于linux来说，实际上没有区别，<cite>一组线程(>=1)就是一个进程[^1]</cite>，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
 > [官方GIL解释](https://docs.python.org/3.7/glossary.html#term-global-interpreter-lock):assure that only one thread executes Python bytecode at a time.
 ___
 
