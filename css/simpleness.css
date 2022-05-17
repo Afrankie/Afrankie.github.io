@@ -4,9 +4,9 @@
 /* custom variable */
 :root {
   /* fonts */
-  --normal-font: Georgia, "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Roboto", sans-serif;
+  --normal-font: system-ui, -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Helvetica Neue", "Segoe UI", "Roboto", sans-serif;
   --code-font: monospace, 'Courier New', Courier;
-  --motto-font: "Motto";
+  --motto-font: system-ui;
   /* colors */
   --white-color: #ffffff;
   --blank-color: #1c1d22;
