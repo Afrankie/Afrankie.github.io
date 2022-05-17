@@ -1,13 +1,78 @@
-<!doctype html><html lang=en><head><meta name=baidu-site-verification content="code-i2IYDeo2iJ"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.83.1"><title>一文搞懂Python进程、线程、协程选择 | Afrankie</title><meta name=description content="A simple and concise hugo theme."><link rel=stylesheet href=https://afrankie.github.io/css/simpleness.css><link rel=canonical href=https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/><link rel=alternate type=application/rss+xml href title=Afrankie><link href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css rel=stylesheet><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-221365203-1','auto'),ga('send','pageview'))</script></head><body class=container><nav class=navigation><div class=nav-left><div class="nav-item nav-title"><a href=https://afrankie.github.io/>Afrankie</a></div><div class="nav-item nav-menu"><a href=/>Home</a>
-<a href=/about/>About</a></div></div><div class="nav-item nav-right fontawesome"><a href=https://github.com/Afrankie target=_blank><i title=GitHub class="fab fa-github"></i></a>
-<a href=https://afrankie.github.io/index.xml target=_blank><i title=RSS class="fas fa-rss"></i></a></div></nav><article class=post><header class=post-header><h1 style=text-align:center>一文搞懂Python进程、线程、协程选择</h1><div class=post-metadata><time datetime=2022-02-23T11:21:00+08:00>February 23, 2022</time> &nbsp;
+<!doctype html><html lang=en>
+<head>
+<meta name=baidu-site-verification content="code-i2IYDeo2iJ">
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=generator content="Hugo 0.83.1">
+<title> 一文搞懂Python进程、线程、协程选择 | Afrankie </title>
+<meta name=description content="A simple and concise hugo theme.">
+<link rel=stylesheet href=https://afrankie.github.io/css/simpleness.css>
+<link rel=canonical href=https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/>
+<link rel=alternate type=application/rss+xml href title=Afrankie>
+<link href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css rel=stylesheet>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-221365203-1','auto'),ga('send','pageview'))</script>
+</head>
+<body class=container>
+<nav class=navigation>
+<div class=nav-left>
+<div class="nav-item nav-title">
+<a href=https://afrankie.github.io/> Afrankie</a>
+</div>
+<div class="nav-item nav-menu">
+<a href=/> Home</a>
+<a href=/about/> About</a>
+</div>
+</div>
+<div class="nav-item nav-right fontawesome">
+<a href=https://github.com/Afrankie target=_blank>
+<i title=GitHub class="fab fa-github"></i>
+</a>
+<a href=https://afrankie.github.io/index.xml target=_blank>
+<i title=RSS class="fas fa-rss"></i>
+</a>
+</div>
+</nav>
+<article class=post>
+<header class=post-header>
+<h1 style=text-align:center>一文搞懂Python进程、线程、协程选择</h1>
+<div class=post-metadata>
+<time datetime=2022-02-23T11:21:00+08:00>February 23, 2022</time> &nbsp;
 <i class="far fa-clock"></i>
 7 min
 46 s
 &nbsp;
 <i class="fas fa-folder"></i>
 <a href=/categories/python>Python</a>
-&nbsp;</div></header><div class=post-toc><div class=post-toc-title>Contents</div><nav id=TableOfContents><ul><li><a href=#tldr>TL;DR</a></li><li><a href=#关于线程进程协程的常见问题>关于线程、进程、协程的常见问题</a><ul><li><a href=#linux中线程和进程的区别>linux中线程和进程的区别？</a></li><li><a href=#什么时候需要多线程>什么时候需要多线程？</a></li><li><a href=#什么时候需要协程>什么时候需要协程？</a></li><li><a href=#什么时候需要进程和线程结合使用>什么时候需要进程和线程结合使用？</a></li></ul></li><li><a href=#实战分析>实战分析</a><ul><li><a href=#io密集型任务>i/o密集型任务</a></li><li><a href=#cpu密集型任务>cpu密集型任务</a></li><li><a href=#iocpu密集型任务>i/o、cpu密集型任务</a></li></ul></li><li><a href=#参考>参考</a></li></ul></nav></div><div class=post-text><h2 id=tldr>TL;DR</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>if</span> io_bound:
+&nbsp;
+</div>
+</header>
+<div class=post-toc>
+<div class=post-toc-title>Contents</div>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#tldr>TL;DR</a></li>
+<li><a href=#关于线程进程协程的常见问题>关于线程、进程、协程的常见问题</a>
+<ul>
+<li><a href=#linux中线程和进程的区别>linux中线程和进程的区别？</a></li>
+<li><a href=#什么时候需要多线程>什么时候需要多线程？</a></li>
+<li><a href=#什么时候需要协程>什么时候需要协程？</a></li>
+<li><a href=#什么时候需要进程和线程结合使用>什么时候需要进程和线程结合使用？</a></li>
+</ul>
+</li>
+<li><a href=#实战分析>实战分析</a>
+<ul>
+<li><a href=#io密集型任务>i/o密集型任务</a></li>
+<li><a href=#cpu密集型任务>cpu密集型任务</a></li>
+<li><a href=#iocpu密集型任务>i/o、cpu密集型任务</a></li>
+</ul>
+</li>
+<li><a href=#参考>参考</a></li>
+</ul>
+</nav>
+</div>
+<div class=post-text>
+<h2 id=tldr>TL;DR</h2>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>if</span> io_bound:
   <span style=color:#66d9ef>if</span> io_very_slow:
     <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#34;use asyncio&#34;</span>)
   <span style=color:#66d9ef>else</span>:
@@ -15,7 +80,16 @@
 <span style=color:#66d9ef>else</span>:
   <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#34;use multiprocess&#34;</span>)
 
-</code></pre></div><h2 id=关于线程进程协程的常见问题>关于线程、进程、协程的常见问题</h2><h3 id=linux中线程和进程的区别>linux中线程和进程的区别？</h3><p>对于linux来说，实际上没有区别，一组线程(>=1)就是一个进程<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。</p><blockquote><p><a href=https://docs.python.org/3.7/glossary.html#term-global-interpreter-lock>官方GIL解释</a>:assure that only one thread executes Python bytecode at a time.</p></blockquote><hr><p>先从简单的情况说起，当前讨论范围是单核CPU，某一时刻只能运行一个线程。</p><hr><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>blocking_io</span>():
+</code></pre></div><h2 id=关于线程进程协程的常见问题>关于线程、进程、协程的常见问题</h2>
+<h3 id=linux中线程和进程的区别>linux中线程和进程的区别？</h3>
+<p>对于linux来说，实际上没有区别，一组线程(>=1)就是一个进程<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。</p>
+<blockquote>
+<p><a href=https://docs.python.org/3.7/glossary.html#term-global-interpreter-lock>官方GIL解释</a>:assure that only one thread executes Python bytecode at a time.</p>
+</blockquote>
+<hr>
+<p>先从简单的情况说起，当前讨论范围是单核CPU，某一时刻只能运行一个线程。</p>
+<hr>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>blocking_io</span>():
     <span style=color:#75715e># File operations (such as logging) can block the</span>
     <span style=color:#75715e># event loop: run them in a thread pool.</span>
     <span style=color:#66d9ef>with</span> open(<span style=color:#e6db74>&#39;/dev/urandom&#39;</span>, <span style=color:#e6db74>&#39;rb&#39;</span>) <span style=color:#66d9ef>as</span> f:
@@ -26,9 +100,21 @@
     <span style=color:#75715e># in general it is preferable to run them in a</span>
     <span style=color:#75715e># process pool.</span>
     <span style=color:#66d9ef>return</span> sum(i <span style=color:#f92672>*</span> i <span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>10</span> <span style=color:#f92672>**</span> <span style=color:#ae81ff>7</span>))
-</code></pre></div><h3 id=什么时候需要多线程>什么时候需要多线程？</h3><p>多线程适合I/O密集型的任务，例如需要执行n次<code>blocking_io</code>，假设执行方法所需时间为t，只有一个进程的话，就是串行执行，运行时间为n*t。
-而对于多线程的情况，虽然同一时间只能有一个线程在执行，在第一个线程在待等待io时候，可以切换到第二个线程执行，当第二个线程在等待io的时候，&mldr;诸如此类。总的运行时间只有t+线程切换的时间(相对较小)。</p><p>举个例子:
-I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖，假设这个过程分为三部分(下单+外卖员配送+取外卖)，单进程就是你下单取到第一个外卖之后再下单第二个外卖。如果是多线程的话就是，你下单完第一个外卖之后就下单第二个外卖。</p><p>而对于CPU密集型的任务，例如需要执行n次<code>cpu_bound</code>，多线程并不适合，因为没有空闲的时间可以利用，切换进程只会增加总的运行时间。这时候需要多核cpu，同一时间能够运行多个线程。</p><h3 id=什么时候需要协程>什么时候需要协程？</h3><p>协程切换的开销很小，且花费的内存小，在任务I/O耗时较长的且较多的时候，协程的性能一定比线程要好，具体看后面的测试结果。</p><h3 id=什么时候需要进程和线程结合使用>什么时候需要进程和线程结合使用？</h3><p>当任务即使I/O密集型也是CPU密集型的时候，这种情况可以分为两大类，一种是CPU操作依赖I/O操作的结果，另一种是I/O操作依赖CPU操作的结果。对于这两种情况，经本地测试，都适合在进程池里面使用线程池。</p><h2 id=实战分析>实战分析</h2><p>来自于工作中碰到的简化场景，具体来说是单机每秒发出1k的rpc请求。这里把rpc请求替换为文件的io操作，分别使用进程池、线程池、协程池的方式处理任务。</p><h3 id=io密集型任务>i/o密集型任务</h3><p>1k任务总量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
+</code></pre></div><h3 id=什么时候需要多线程>什么时候需要多线程？</h3>
+<p>多线程适合I/O密集型的任务，例如需要执行n次<code>blocking_io</code>，假设执行方法所需时间为t，只有一个进程的话，就是串行执行，运行时间为n*t。
+而对于多线程的情况，虽然同一时间只能有一个线程在执行，在第一个线程在待等待io时候，可以切换到第二个线程执行，当第二个线程在等待io的时候，&mldr;诸如此类。总的运行时间只有t+线程切换的时间(相对较小)。</p>
+<p>举个例子:
+I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖，假设这个过程分为三部分(下单+外卖员配送+取外卖)，单进程就是你下单取到第一个外卖之后再下单第二个外卖。如果是多线程的话就是，你下单完第一个外卖之后就下单第二个外卖。</p>
+<p>而对于CPU密集型的任务，例如需要执行n次<code>cpu_bound</code>，多线程并不适合，因为没有空闲的时间可以利用，切换进程只会增加总的运行时间。这时候需要多核cpu，同一时间能够运行多个线程。</p>
+<h3 id=什么时候需要协程>什么时候需要协程？</h3>
+<p>协程切换的开销很小，且花费的内存小，在任务I/O耗时较长的且较多的时候，协程的性能一定比线程要好，具体看后面的测试结果。</p>
+<h3 id=什么时候需要进程和线程结合使用>什么时候需要进程和线程结合使用？</h3>
+<p>当任务即使I/O密集型也是CPU密集型的时候，这种情况可以分为两大类，一种是CPU操作依赖I/O操作的结果，另一种是I/O操作依赖CPU操作的结果。对于这两种情况，经本地测试，都适合在进程池里面使用线程池。</p>
+<h2 id=实战分析>实战分析</h2>
+<p>来自于工作中碰到的简化场景，具体来说是单机每秒发出1k的rpc请求。这里把rpc请求替换为文件的io操作，分别使用进程池、线程池、协程池的方式处理任务。</p>
+<h3 id=io密集型任务>i/o密集型任务</h3>
+<p>1k任务总量</p>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
 0.9911940097808838
 <span style=color:#75715e>####asyncio process pool]</span>
 1.2635221481323242
@@ -36,7 +122,8 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 1.2167432308197021
 <span style=color:#75715e>####process pool</span>
 1.5319018363952637
-</code></pre></div><p>10k任务总量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
+</code></pre></div><p>10k任务总量</p>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
 5.968851804733276
 <span style=color:#75715e>####asyncio process pool]</span>
 6.5089499950408936
@@ -44,7 +131,10 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 7.458053112030029
 <span style=color:#75715e>####process pool</span>
 6.667386054992676
-</code></pre></div><p>可以看到使用线程池性能略好，和使用进程池的差别并不大。因为本质上python的进程、线程和操作系统是一致的，而慢了一些的原因，我猜测是python中的进程调度有一些附加的操作。</p><h3 id=cpu密集型任务>cpu密集型任务</h3><p>1k任务总量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
+</code></pre></div><p>可以看到使用线程池性能略好，和使用进程池的差别并不大。因为本质上python的进程、线程和操作系统是一致的，而慢了一些的原因，我猜测是python中的进程调度有一些附加的操作。</p>
+<h3 id=cpu密集型任务>cpu密集型任务</h3>
+<p>1k任务总量</p>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
 0.8021156787872314
 <span style=color:#75715e>####asyncio process pool]</span>
 0.5527217388153076
@@ -52,7 +142,8 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 0.7702062129974365
 <span style=color:#75715e>####process pool</span>
 0.4566621780395508
-</code></pre></div><p>10k任务总量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
+</code></pre></div><p>10k任务总量</p>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio thread pool</span>
 7.525069952011108
 <span style=color:#75715e>####asyncio process pool]</span>
 3.0321288108825684
@@ -61,7 +152,10 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 <span style=color:#75715e>####process pool</span>
 1.6991519927978516
 </code></pre></div><p>前面提到，由于GIL的原因，某一时刻只能有一个线程在运行，其他线程会阻塞在GIL锁，抢锁的次数会非常多。可以通过PyCharm的profile查看耗时较多的函数，这里只profile一下使用线程池的函数。
-<img src=/posts/images/thread_pool_running_cpu_bound_task_profile.png alt=thread_pool_running_cpu_bound_task_profile></p><h3 id=iocpu密集型任务>i/o、cpu密集型任务</h3><p>1K任务总量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio process pool, using thread pool True</span>
+<img src=/posts/images/thread_pool_running_cpu_bound_task_profile.png alt=thread_pool_running_cpu_bound_task_profile></p>
+<h3 id=iocpu密集型任务>i/o、cpu密集型任务</h3>
+<p>1K任务总量</p>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio process pool, using thread pool True</span>
 0.8400530815124512
 <span style=color:#75715e>####asyncio process pool, using thread pool False</span>
 1.1249358654022217
@@ -69,7 +163,8 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 0.8603811264038086
 <span style=color:#75715e>####process pool, and using threading pool False</span>
 0.9869413375854492
-</code></pre></div><p>10k任务总量</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio process pool, using thread pool True</span>
+</code></pre></div><p>10k任务总量</p>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>####asyncio process pool, using thread pool True</span>
 6.82210898399353
 <span style=color:#75715e>####asyncio process pool, using thread pool False</span>
 11.561522960662842
@@ -77,7 +172,8 @@ I/O密集型（程序等待IO的时间不少）的任务可以类比为点外卖
 9.900066614151001
 <span style=color:#75715e>####process pool, and using threading pool False</span>
 11.04285192489624
-</code></pre></div><p>测试代码:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> asyncio
+</code></pre></div><p>测试代码:</p>
+<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> asyncio
 <span style=color:#f92672>import</span> time
 <span style=color:#f92672>from</span> concurrent.futures <span style=color:#f92672>import</span> ThreadPoolExecutor, ProcessPoolExecutor, wait
 <span style=color:#f92672>from</span> multiprocessing <span style=color:#f92672>import</span> Pool
@@ -189,11 +285,53 @@ async <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>async_with_
     asyncio<span style=color:#f92672>.</span>run(async_with_process(False))
     process_pool(True)
     process_pool(False)
-</code></pre></div><h2 id=参考>参考</h2><ul><li><a href=https://medium.com/contentsquare-engineering-blog/multithreading-vs-multiprocessing-in-python-ece023ad55a>Multithreading VS Multiprocessing in Python</a></li><li><a href=https://stackoverflow.com/questions/1934715/difference-between-a-coroutine-and-a-thread/34823421#34823421>Difference between a &ldquo;coroutine&rdquo; and a &ldquo;thread&rdquo;?</a></li><li><a href=https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor>asyncio.loop.run_in_executor in python doc</a></li><li><a href=https://stackoverflow.com/questions/27455155/python-multiprocessing-combined-with-multithreading>Python Multiprocessing combined with Multithreading</a></li><li><a href=https://speakerdeck.com/dabeaz/understanding-the-python-gil>Understanding the Python GIL</a></li></ul><section class=footnotes role=doc-endnotes><hr><ol><li id=fn:1 role=doc-endnote><p><a href=https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread>Will a CPU process have at least one thread?</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></section></div><footer class=post-footer><div class=post-lastmod><time datetime=2022-02-25T14:13:38+08:00>update @ February 25, 2022</time><p></p></div><div class=post-tags><i class="fas fa-tags"></i>
+</code></pre></div><h2 id=参考>参考</h2>
+<ul>
+<li><a href=https://medium.com/contentsquare-engineering-blog/multithreading-vs-multiprocessing-in-python-ece023ad55a>Multithreading VS Multiprocessing in Python</a></li>
+<li><a href=https://stackoverflow.com/questions/1934715/difference-between-a-coroutine-and-a-thread/34823421#34823421>Difference between a &ldquo;coroutine&rdquo; and a &ldquo;thread&rdquo;?</a></li>
+<li><a href=https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor>asyncio.loop.run_in_executor in python doc</a></li>
+<li><a href=https://stackoverflow.com/questions/27455155/python-multiprocessing-combined-with-multithreading>Python Multiprocessing combined with Multithreading</a></li>
+<li><a href=https://speakerdeck.com/dabeaz/understanding-the-python-gil>Understanding the Python GIL</a></li>
+</ul>
+<section class=footnotes role=doc-endnotes>
+<hr>
+<ol>
+<li id=fn:1 role=doc-endnote>
+<p><a href=https://stackoverflow.com/questions/4894609/will-a-cpu-process-have-at-least-one-thread>Will a CPU process have at least one thread?</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</div>
+<footer class=post-footer>
+<div class=post-lastmod>
+<time datetime=2022-02-25T14:13:38+08:00>
+update @ February 25, 2022
+</time>
+<p></p>
+</div>
+<div class=post-tags>
+<i class="fas fa-tags"></i>
 <a href=/tags/python>Python</a>
 &nbsp;
 <a href=/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B>并发编程</a>
-&nbsp;</div></footer><div class=comments><div class=comments><script src=https://utteranc.es/client.js repo=Afrankie/blog-comments issue-term=title theme=github-light crossorigin=anonymous async></script></div></div></article><div class=foot>&copy; 2021 - 2022 &#183;
-<a href=/>Afrankie</a> &#183;
+&nbsp;
+</div>
+</footer>
+<div class=comments>
+<div class=comments>
+<script src=https://utteranc.es/client.js repo=Afrankie/blog-comments issue-term=title theme=github-light crossorigin=anonymous async></script>
+</div>
+</div>
+</article>
+<div class=foot>
+&copy; 2021 - 2022 &#183;
+<a href=/> Afrankie </a> &#183;
 Theme <a href=https://github.com/RainerChiang/simpleness>Simpleness</a> Powered by <a href=https://gohugo.io/>Hugo</a> &#183;
-<a href=#><i class="fas fa-chevron-up"></i></a></div></body><script src=/js/lazyload.min.js></script><script>var lazyImage=new LazyLoad({container:document.getElementById('article')})</script><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin=anonymous></script><script>(function(){var a=$('#TableOfContents'),b;if(a.length>0){b=$(window);function c(){var e=b.scrollTop(),f=$('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6'),c="",d;if(f.each(function(b,a){a=$(a),a.offset().top-10<=e&&(c=a.attr('id'))}),d=a.find('a.active'),d.length==1&&d.eq(0).attr('href')=='#'+c)return!0;d.each(function(b,a){$(a).removeClass('active').siblings('ul').hide()}),a.find('a[href="#'+c+'"]').parentsUntil('#TableOfContents').each(function(b,a){$(a).children('a').addClass('active').siblings('ul').show()})}b.on('scroll',c),$(document).ready(function(){a.find('a').parent('li').find('ul').hide(),c(),document.getElementsByClassName('post-toc')[0].style.display=''})}})()</script></html>
+<a href=#><i class="fas fa-chevron-up"></i></a>
+</div>
+</body>
+<script src=/js/lazyload.min.js></script>
+<script>var lazyImage=new LazyLoad({container:document.getElementById('article')})</script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.min.js integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin=anonymous></script>
+<script>(function(){var a=$('#TableOfContents'),b;if(a.length>0){b=$(window);function c(){var e=b.scrollTop(),f=$('.post-text h1, .post-text h2, .post-text h3, .post-text h4, .post-text h5, .post-text h6'),c="",d;if(f.each(function(b,a){a=$(a),a.offset().top-10<=e&&(c=a.attr('id'))}),d=a.find('a.active'),d.length==1&&d.eq(0).attr('href')=='#'+c)return!0;d.each(function(b,a){$(a).removeClass('active').siblings('ul').hide()}),a.find('a[href="#'+c+'"]').parentsUntil('#TableOfContents').each(function(b,a){$(a).children('a').addClass('active').siblings('ul').show()})}b.on('scroll',c),$(document).ready(function(){a.find('a').parent('li').find('ul').hide(),c(),document.getElementsByClassName('post-toc')[0].style.display=''})}})()</script>
+</html>

@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Afrankie</title><link>https://afrankie.github.io/</link><description>Recent content on Afrankie</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 16 May 2022 17:34:34 +0800</lastBuildDate><atom:link href="https://afrankie.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>MIT6s081脱坑总结</title><link>https://afrankie.github.io/posts/mit6s081%E8%84%B1%E5%9D%91%E6%80%BB%E7%BB%93/</link><pubDate>Mon, 16 May 2022 17:34:34 +0800</pubDate><guid>https://afrankie.github.io/posts/mit6s081%E8%84%B1%E5%9D%91%E6%80%BB%E7%BB%93/</guid><description>课程地址
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Afrankie</title>
+<link>https://afrankie.github.io/</link>
+<description>Recent content on Afrankie</description>
+<generator>Hugo -- gohugo.io</generator>
+<language>en</language>
+<lastBuildDate>Mon, 16 May 2022 17:34:34 +0800</lastBuildDate><atom:link href="https://afrankie.github.io/index.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>MIT6s081脱坑总结</title>
+<link>https://afrankie.github.io/posts/mit6s081%E8%84%B1%E5%9D%91%E6%80%BB%E7%BB%93/</link>
+<pubDate>Mon, 16 May 2022 17:34:34 +0800</pubDate>
+<guid>https://afrankie.github.io/posts/mit6s081%E8%84%B1%E5%9D%91%E6%80%BB%E7%BB%93/</guid>
+<description>课程地址
 废话 对本学渣来说，完成这个课程还是挺激动的，尽管学完了这门课不能对自己的处境有什么实质性的好转。下图为开入坑到脱坑的时间线，花了一年时间，真是惭愧，按照官方的进度到最后一个实验(lab11)的截止日期只有12周的时间(3个月)。勉勉强强完成了所有的实验，我也很清楚自己理解了多少，如果对源码的理解来说，100分是满分的话，自己应该是70分上下的水平。为什么说是勉勉强强呢。因为我完成的lab通常能通过所有的打分点测试，但并不代表代码写的没有bug，有些甚至为了过test放低了对自己的标准（回想起来是没有耐心了，比较着急把test过了，想继续往后学，这么做有得有失把），这种偷懒的行为一般不是在非常重要的实验。像lock的lab（偶尔test会卡死过不了），以及最后net的lab（强行把测试点中的并行执行的udp发包，在操作系统的底层处理逻辑改为串行的发包以及收包，才通过的测试），不过加起来应该是不超过4个的。 清华大学和MIT的关于操作系统的基础课程我都学了一遍，大概是21年初的时候，先学的清华大学陈渝老师在学堂在线的公开课，实验也都做过一遍，当然也没能完全独立做完，学完MIT的课后感觉清华课程体验较差一些，要问我学完这个课有什么不同的体验，体验就是学到的东西非常系统而且实验有趣些。 从以下几个点来说把
 讲义上:
 印象中，清华的较为零散，讲课用的是ppt，而mit有专门的一本讲义，内容比较细，上课听不懂可以跟着讲义学，讲义会结合xv6的源码来讲。 实验上:
@@ -7,10 +20,34 @@ xv6的代码量小，跟着课程讲义来是比较好懂的（印象中做清�
 学到的东西 被整一套实验摩擦下来，基本让你知道一个操作系统是怎么跑起来的以及内部运行的原理，还是很有意思的，离大佬的距离又更近了一步😏。例如shell是怎么实现的？我们在命令行中用的管道是怎么实现的？标准输入、输出、错误的描述符是什么实现的？什么是虚拟内存、能够带来什么好处？内核态和用户态以及怎么跳转的？sleep、锁是怎样实现的？trap机制，怎么实现调用堆栈打印？硬件驱动（比如终端的输入以及输出、磁盘的读写、网卡收发各种通信协议的包tdp/udp/icmp/arp/ip）？如何实现切换用户态进程？fork为什么能让两个进程在同一个fork调用的地方开始运行？写时分配内存、mmap、cow等牛逼的技术怎么实现？怎样基于网卡驱动造一个socket通信？文件系统的文件读写、文件路径、事务是怎么实现的？
 挖坑 希望能写个关于xv6的系列文章把，把上面的问题都讲清楚。
 先开个坑
-MIT6s081虚拟内存 &amp;ndash;预计一个月内</description></item><item><title>一文搞懂Python进程、线程、协程选择</title><link>https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/</link><pubDate>Wed, 23 Feb 2022 11:21:00 +0800</pubDate><guid>https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/</guid><description>TL;DR if io_bound: if io_very_slow: print(&amp;#34;use asyncio&amp;#34;) else: print(&amp;#34;use multithread&amp;#34;) else: print(&amp;#34;use multiprocess&amp;#34;) 关于线程、进程、协程的常见问题 linux中线程和进程的区别？ 对于linux来说，实际上没有区别，一组线程(&amp;gt;=1)就是一个进程1，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
+MIT6s081虚拟内存 &amp;ndash;预计一个月内 </description>
+</item>
+<item>
+<title>一文搞懂Python进程、线程、协程选择</title>
+<link>https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/</link>
+<pubDate>Wed, 23 Feb 2022 11:21:00 +0800</pubDate>
+<guid>https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/</guid>
+<description>TL;DR if io_bound: if io_very_slow: print(&amp;#34;use asyncio&amp;#34;) else: print(&amp;#34;use multithread&amp;#34;) else: print(&amp;#34;use multiprocess&amp;#34;) 关于线程、进程、协程的常见问题 linux中线程和进程的区别？ 对于linux来说，实际上没有区别，一组线程(&amp;gt;=1)就是一个进程1，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
 官方GIL解释:assure that only one thread executes Python bytecode at a time.
 先从简单的情况说起，当前讨论范围是单核CPU，某一时刻只能运行一个线程。
-def blocking_io(): # File operations (such as logging) can block the # event loop: run them in a thread pool. with open(&amp;#39;/dev/urandom&amp;#39;, &amp;#39;rb&amp;#39;) as f: return f.read(100) def cpu_bound(): # CPU-bound operations will block the event loop: # in general it is preferable to run them in a # process pool.</description></item><item><title>About</title><link>https://afrankie.github.io/about/</link><pubDate>Sat, 19 Jun 2021 17:34:34 +0800</pubDate><guid>https://afrankie.github.io/about/</guid><description>education:
+def blocking_io(): # File operations (such as logging) can block the # event loop: run them in a thread pool. with open(&amp;#39;/dev/urandom&amp;#39;, &amp;#39;rb&amp;#39;) as f: return f.read(100) def cpu_bound(): # CPU-bound operations will block the event loop: # in general it is preferable to run them in a # process pool.</description>
+</item>
+<item>
+<title>About</title>
+<link>https://afrankie.github.io/about/</link>
+<pubDate>Sat, 19 Jun 2021 17:34:34 +0800</pubDate>
+<guid>https://afrankie.github.io/about/</guid>
+<description>education:
 SISE(2017-2021) major in software engineering interesting things i&amp;rsquo;ve tried:
 mit 6s081 (2021-3 ~ 2022-5) 算法竞赛进阶指南 (2021-1 ~ now) some wishes:
-reach 1700 rating in atcoder and codeforces, maybe it needs years to achive. take more hard-core open courses and finish labs, field include database, network, distributed system continue to breakthrough yourself</description></item><item><title>Hello</title><link>https://afrankie.github.io/posts/hello/</link><pubDate>Sat, 19 Jun 2021 15:29:33 +0800</pubDate><guid>https://afrankie.github.io/posts/hello/</guid><description>Hello Hugo!</description></item></channel></rss>
+reach 1700 rating in atcoder and codeforces, maybe it needs years to achive. take more hard-core open courses and finish labs, field include database, network, distributed system continue to breakthrough yourself </description>
+</item>
+<item>
+<title>Hello</title>
+<link>https://afrankie.github.io/posts/hello/</link>
+<pubDate>Sat, 19 Jun 2021 15:29:33 +0800</pubDate>
+<guid>https://afrankie.github.io/posts/hello/</guid>
+<description>Hello Hugo!</description>
+</item>
+</channel>
+</rss>
