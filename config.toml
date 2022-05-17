@@ -78,5 +78,6 @@ tag = "tags"
   [minify.tdewolff]
     [minify.tdewolff.html]
       keepWhitespace = true
+      keepQuotes = true
     [minify.tdewolff.xml]
       keepWhitespace = true
