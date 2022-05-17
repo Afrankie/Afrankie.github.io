@@ -30,3 +30,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          external_repository: afrankie/afrankie.github.io
+          publish_branch: master
+          cname: afrankie.io # 自动创建CNAME文件用来绑定域名
+          allow_empty_commit: false
+          commit_message: ${{ github.event.head_commit.message }}
