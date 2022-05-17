@@ -73,3 +73,10 @@ tag = "tags"
     noClasses = true
     style = "monokai" # github, dracula, vim, monokai
     tabWidth = 4
+
+[minify]
+  [minify.tdewolff]
+    [minify.tdewolff.html]
+      keepWhitespace = true
+    [minify.tdewolff.xml]
+      keepWhitespace = true
