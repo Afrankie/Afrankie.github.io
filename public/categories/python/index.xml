@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Afrankie</title>
+    <link>https://afrankie.github.io/categories/python/</link>
+    <description>Recent content in Python on Afrankie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 23 Feb 2022 11:21:00 +0800</lastBuildDate><atom:link href="https://afrankie.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一文搞懂Python进程、线程、协程选择</title>
+      <link>https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/</link>
+      <pubDate>Wed, 23 Feb 2022 11:21:00 +0800</pubDate>
+      
+      <guid>https://afrankie.github.io/posts/%E4%B8%80%E6%96%87%E6%90%9E%E6%87%82python%E8%BF%9B%E7%A8%8B%E7%BA%BF%E7%A8%8B%E5%8D%8F%E7%A8%8B%E9%80%89%E6%8B%A9/</guid>
+      <description>TL;DR if io_bound: if io_very_slow: print(&amp;#34;use asyncio&amp;#34;) else: print(&amp;#34;use multithread&amp;#34;) else: print(&amp;#34;use multiprocess&amp;#34;) 关于线程、进程、协程的常见问题 linux中线程和进程的区别？ 对于linux来说，实际上没有区别，一组线程(&amp;gt;=1)就是一个进程1，而在python主流解释器实现(CPython)中，进程和线程最大区别之一就是，多进程不受GIL的影响，而一个进程中的多个线程的运行(一个进程中的多个线程能在不同的cpu上运行)则受GIL的影响，所以多进程（使用合理的进程数量）理论上是最快的。
+ 官方GIL解释:assure that only one thread executes Python bytecode at a time.
+  先从简单的情况说起，当前讨论范围是单核CPU，某一时刻只能运行一个线程。
+ def blocking_io(): # File operations (such as logging) can block the # event loop: run them in a thread pool. with open(&amp;#39;/dev/urandom&amp;#39;, &amp;#39;rb&amp;#39;) as f: return f.read(100) def cpu_bound(): # CPU-bound operations will block the event loop: # in general it is preferable to run them in a # process pool.</description>
+    </item>
+    
+  </channel>
+</rss>
