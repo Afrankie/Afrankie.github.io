@@ -21,7 +21,7 @@ googleAnalytics = "UA-221365203-1"
   startyear = "2021"
   showmonth = true
   slogan = "confusionless is imposible, but you should keep pursuing"
-  description = "A simple and concise hugo theme."
+  description = "Blog about computer science. Topics include operating system, database, distributed system, and so on."
   disqus = ""
 
 [params.valine]
