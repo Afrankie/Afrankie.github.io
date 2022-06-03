@@ -12,7 +12,7 @@ interesting things i've tried:
 - 算法竞赛进阶指南 (2021-1 ~ now)
 
 some wishes:
+- try my best to graduate enterance exam.
 - reach 1700 rating in atcoder and codeforces, maybe it needs years to achive. ![my_codeforces_highest_rating](https://cp-logo.vercel.app/codeforces/jayjian) ![my_atcoder_highest_rating](https://cp-logo.vercel.app/atcoder/jayjian)
 - take more hard-core open courses and finish labs, field include database, network, distributed system
-- continue to breakthrough yourself
 
